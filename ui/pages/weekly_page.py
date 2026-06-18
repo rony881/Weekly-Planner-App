@@ -1,5 +1,3 @@
-from tkinter import Widget
-
 from PyQt6.QtWidgets import (
     QLabel,
     QPushButton,
@@ -9,17 +7,11 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QTabWidget
 )
+from .frame import Page_Header
+
 
 days = ["SAT","SUN","MON","TUE","WED","THU","FRI"]
 dummy_tasks = ["Reading","Study","Maditate","Workout","Art"]
-
-class Tab_Panel(QTabWidget):
-    def __init__(self,parent):
-        super().__init__()
-        self.parent = parent
-    
-    def add_tab(self,widget,tab_name):
-        self.addTab(widget,tab_name)
 
 
 class Weekly_Tab(QFrame):
@@ -28,14 +20,18 @@ class Weekly_Tab(QFrame):
         self.parent = parent
 
         layout = QVBoxLayout(self)
-        tab = Tab_Panel(self) 
+        tab = QTabWidget(self)
+        
+        page_header = Page_Header(self)
+        page_header.set_title("Weekly Schedule",h3="Build Havits, Build Tomorrow")
 
         for day in days:
-            tab.add_tab(Daily_page(dummy_tasks),day)
+            tab.addTab(Task_Area(dummy_tasks),day)
         
+        layout.addWidget(page_header)
         layout.addWidget(tab)
 
-class Daily_page(QWidget):
+class Task_Area(QWidget):
     def __init__(self, tasks):
         super().__init__()
 
