@@ -3,26 +3,25 @@ from PyQt6.QtWidgets import (
 )
 
 class Page_Header(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self,h1:str , h2:str = None):
+        super().__init__()
 
-        self.layout = QVBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 4, 0)
-
-    def set_title(self,h1:str= None, h2:str = None,h3:str = None):
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 4, 0)
 
         if h1:
-            a1 = QLabel(h1)
-            a1.setStyleSheet("font-weight: bold; font-size: 25px")
-            self.layout.addWidget(a1)
+            title = QLabel(h1)
+            title.setStyleSheet(
+                """
+                font-size: 22px;
+                font-weight: bold;
+                """
+            )
+            layout.addWidget(title)
 
         if h2:
-            a2 = QLabel(h2)
-            a2.setStyleSheet("font-size: 18px")
-            self.layout.addWidget(a2)
+            subtitle = QLabel("Build Habits, Build Tomorrow")
+            subtitle.setStyleSheet("color: gray;")
+            layout.addWidget(subtitle)
 
-        if h3:
-            a3 = QLabel(h3)
-            a3.setStyleSheet("font-size: 12px")
-            self.layout.addWidget(a3)
 

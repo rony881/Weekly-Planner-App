@@ -19,7 +19,7 @@ class Mainwindow(QMainWindow):
             """)       
         self.setCentralWidget(self.splitter)
 
-        self.weekly_page = Weekly_Tab(self)
+        self.weekly_page = Weekly_Tab()
 
         # Setup
         self._setup_main_panel()
