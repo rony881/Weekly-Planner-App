@@ -1,11 +1,9 @@
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout,QAbstractItemView,QHeaderView,QTableWidgetItem
+    QWidget, QVBoxLayout,QHBoxLayout,QHeaderView,QTableWidgetItem, QFrame, QAbstractItemView
 )
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
 from qfluentwidgets import TableWidget,TitleLabel
-from qfluentwidgets.components.date_time.picker_base import QFrame
-from qframelesswindow.titlebar import QHBoxLayout
 
 DATA: dict[str, list[tuple]] = {
     "Mon": [
@@ -68,7 +66,6 @@ class WeeklyPlanner(QWidget):
         layout.addWidget(self._make_title_bar())
         self.table = PlannerTable()
         layout.addWidget(self.table, 1)
-        # self._load_data()
         
     def _make_title_bar(self):
         title_bar = QFrame()
@@ -84,6 +81,7 @@ class PlannerTable(TableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._setup_columns()
+        self.load_data(DATA["Mon"])
 
     def _setup_columns(self):
 
@@ -150,6 +148,6 @@ class PlannerTable(TableWidget):
     def load_data(self, entries: list[tuple]) -> None:
         self.setRowCount(0)
         for time, task, priority in entries:
-            self.add_entry(time, task, priority)
+            self.add_task(time, task, priority)
         
         

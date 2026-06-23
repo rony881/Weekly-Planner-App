@@ -1,10 +1,3 @@
-from PyQt6.QtWidgets import (
-    QMainWindow,
-    QVBoxLayout,
-    QWidget,
-    QListWidget,
-    QSplitter
-)
 from qfluentwidgets import FluentWindow, FluentIcon as FI
 from ui.pages.weekly_page import WeeklyPlanner
 
