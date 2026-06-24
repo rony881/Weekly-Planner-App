@@ -1,9 +1,11 @@
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout,QHBoxLayout,QHeaderView,QTableWidgetItem, QFrame, QAbstractItemView
+    QStackedWidget, QWidget, QVBoxLayout,QHBoxLayout,QHeaderView,QTableWidgetItem, QFrame, QAbstractItemView,QPushButton
 )
 from PyQt6.QtGui import QColor,QFont
 from PyQt6.QtCore import Qt
-from qfluentwidgets import TableWidget,TitleLabel
+from qfluentwidgets import TableWidget,TitleLabel,TabWidget
+
+DAYS = ["Sat","Sun","Mon", "Tue", "Wed", "Thu", "Fri"]
 
 DATA: dict[str, list[tuple]] = {
     "Mon": [
@@ -62,10 +64,10 @@ class WeeklyPlanner(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-
+        
         layout.addWidget(self._make_title_bar())
-        self.table = PlannerTable()
-        layout.addWidget(self.table, 1)
+        layout.addWidget(self._make_day_bar())
+        layout.addWidget(self._weekly_table())
         
     def _make_title_bar(self):
         title_bar = QFrame()
@@ -73,20 +75,49 @@ class WeeklyPlanner(QWidget):
         title = TitleLabel("📅 Weekly Schedule")
         layout.addWidget(title)
         layout.addStretch()
-
         return title_bar
+
+    def _weekly_table(self) -> QStackedWidget:
+        self.week_tabs = QStackedWidget(self)
+        for days, entries in DATA.items():
+            table = PlannerTable(self.week_tabs)
+            table.load_data(entries)
+            self.week_tabs.addWidget(table)
+        return self.week_tabs
+
+    def _make_day_bar(self) -> QFrame:
+        frame = QFrame()
+        frame.setFixedHeight(48)
+ 
+        h = QHBoxLayout(frame)
+        h.setContentsMargins(16, 8, 16, 8)
+        h.setSpacing(4)
+
+        for day in DAYS:
+            btn = QPushButton(day)
+            btn.setFixedHeight(30)
+            btn.setStyleSheet(
+                "background: #fbfbfa; border-bottom: 1px solid #E9E9E7;color:#1e1e1e;"
+            )
+            btn.clicked.connect(
+                lambda checked=False, d=day:
+                self.week_tabs.setCurrentIndex(DAYS.index(d))
+            )
+            h.addWidget(btn)
+        h.addStretch()
+        
+        return frame
 
 class PlannerTable(TableWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._setup_columns()
-        self.load_data(DATA["Mon"])
 
     def _setup_columns(self):
 
         self.setColumnCount(3)
-        self.setHorizontalHeaderLabels(["Time","Task","Shift"])
+        self.setHorizontalHeaderLabels(["Time","Task","Priority"])
 
         hdr = self.horizontalHeader()
         hdr.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
@@ -108,8 +139,9 @@ class PlannerTable(TableWidget):
             | QAbstractItemView.EditTrigger.SelectedClicked
         )
         self.viewport().setMouseTracking(True)
+        
 
-    def add_task(self,task: str, time: str, shift: str) -> int:
+    def add_task(self,time: str, task: str, shift: str) -> int:
         row = self.rowCount()
         self.insertRow(row)
 

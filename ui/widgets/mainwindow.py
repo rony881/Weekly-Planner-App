@@ -14,4 +14,4 @@ class Mainwindow(FluentWindow):
         self._setup_main_panel()
 
     def _setup_main_panel(self):
-        self.addSubInterface(self.weekly_page,FI.HOME,"Weekly Page")
+        self.addSubInterface(self.weekly_page,FI.TAG,"Weekly Page")
