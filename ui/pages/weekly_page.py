@@ -64,6 +64,7 @@ class WeeklyPlanner(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
+        self.day_buttons = {}
         
         layout.addWidget(self._make_title_bar())
         layout.addWidget(self._make_day_bar())
@@ -96,18 +97,46 @@ class WeeklyPlanner(QWidget):
         for day in DAYS:
             btn = QPushButton(day)
             btn.setFixedHeight(30)
-            btn.setStyleSheet(
-                "background: #fbfbfa; border-bottom: 1px solid #E9E9E7;color:#1e1e1e;"
-            )
+            btn.setCheckable(True)
+            btn.setStyleSheet("""
+            QPushButton {
+                background    : transparent;
+                color         : #6B6B69;
+                border        : 1px solid transparent;
+                border-radius : 6px;
+                font-size     : 12.5px;
+                font-family   : 'Segoe UI', sans-serif;
+                padding       : 0 14px;
+            }
+            QPushButton:hover {
+                    background : #F0EFED;
+                    color      : #1C1C1C;
+            }
+            QPushButton:checked {
+                background    : #E8F3FE;
+                color         : #2383E2;
+                border        : 1px solid #B4D1F8;
+                border-radius : 6px;
+                font-weight   : 700;
+                font-size     : 12.5px;
+                font-family   : 'Segoe UI', sans-serif;
+                padding       : 0 14px;
+            }
+            """)
+            self.day_buttons[day] = btn
             btn.clicked.connect(
-                lambda checked=False, d=day:
-                self.week_tabs.setCurrentIndex(DAYS.index(d))
+                lambda checked, d=day:
+                self.select_day(d)
             )
             h.addWidget(btn)
         h.addStretch()
         
         return frame
-
+    def select_day(self, day):
+        self.week_tabs.setCurrentIndex(DAYS.index(day))
+        for d, btn in self.day_buttons.items():
+            btn.setChecked(d == day)
+            
 class PlannerTable(TableWidget):
 
     def __init__(self, parent=None):
