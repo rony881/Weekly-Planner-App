@@ -1,20 +1,22 @@
-from PyQt6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QHeaderView,
-    QTableWidgetItem,
-    QAbstractItemView,
-    QTabWidget,
-)
-from PyQt6.QtGui import QColor, QFont
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QFont
+from PyQt6.QtWidgets import (
+    QHeaderView,
+    QPushButton,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
+from qfluentwidgets import TableWidget
 
 from core.data_loader import load_schedule
 from ui.widgets.title_bar import TitleBar
-from qfluentwidgets import TableWidget
 
 DAYS = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]
-
+TIME_COL = 0
+TASK_COL = 1
+PRIORITY_COL = 2
 
 class WeeklyPage(QWidget):
 
@@ -53,7 +55,7 @@ class WeeklyPage(QWidget):
                 padding         : 4px 14px;
                 margin          : 8px 2px;
                 min-height      : 30px;
-            }
+    }
 
             QTabBar::tab:hover {
                 background      : #F0EFED;
@@ -80,37 +82,39 @@ class WeeklyPage(QWidget):
         if day in DAYS:
             self.tab_widget.setCurrentIndex(DAYS.index(day))
 
-class PlannerTable(TableWidget):
+class PlannerTable(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._setup_columns()
+        layout = QVBoxLayout(self)
 
-    def _setup_columns(self):
-        self.setColumnCount(3)
-        self.setHorizontalHeaderLabels(["Time", "Task", "Priority"])
+        self.table = self.create_table()
+        self.add_btn = self.create_btn()
 
-        hdr = self.horizontalHeader()
+        layout.addWidget(self.table)
+        layout.addWidget(self.add_btn)
+
+    def create_table(self):
+        table = TableWidget(self)
+
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(["Time", "Task", "Priority"])
+
+        hdr = table.horizontalHeader()
         hdr.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
         hdr.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         hdr.setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
 
-        self.setColumnWidth(0, 110)
-        self.setColumnWidth(2, 150)
+        table.setColumnWidth(0, 110)
+        table.setColumnWidth(2, 150)
 
-        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.setShowGrid(True)
-        self.setAlternatingRowColors(False)
-        self.setEditTriggers(
-            QAbstractItemView.EditTrigger.DoubleClicked
-            | QAbstractItemView.EditTrigger.SelectedClicked
-        )
-        self.viewport().setMouseTracking(False)
+        table.setShowGrid(True)
+
+        return table
 
     def add_task(self, time: str, task: str, shift: str) -> int:
-        row = self.rowCount()
-        self.insertRow(row)
+        row = self.table.rowCount()
+        self.table.insertRow(row)
 
         body_font = QFont("Segoe UI", 13)
 
@@ -120,7 +124,7 @@ class PlannerTable(TableWidget):
         time_column.setTextAlignment(
             Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
         )
-        self.setItem(row, 0, time_column)
+        self.table.setItem(row, TIME_COL, time_column)
 
         # Column 1 – Task
         task_column = QTableWidgetItem(task)
@@ -128,7 +132,7 @@ class PlannerTable(TableWidget):
         task_column.setTextAlignment(
             Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
         )
-        self.setItem(row, 1, task_column)
+        self.table.setItem(row, TASK_COL, task_column)
 
         # Column 2 – Priority / Shift
         shift_column = QTableWidgetItem(shift)
@@ -137,12 +141,38 @@ class PlannerTable(TableWidget):
         shift_column.setTextAlignment(
             Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
         )
-        self.setItem(row, 2, shift_column)
+        self.table.setItem(row, PRIORITY_COL, shift_column)
 
-        self.setRowHeight(row, 46)
+        self.table.setRowHeight(row, 46)
         return row
 
     def load_data(self, entries: list[list]) -> None:
-        self.setRowCount(0)
+        self.table.setRowCount(0)
         for time, task, priority in entries:
             self.add_task(time, task, priority)
+
+    def create_btn(self):
+        add_button = QPushButton("+ Add Task")
+        add_button.setFixedHeight(60)   # Big height
+        add_button.setStyleSheet("""
+        QPushButton {
+            border: 2px dashed #888;
+            border-radius: 8px;
+            color: #555;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        QPushButton:hover {
+            border-color: #0078d7;
+            color: #0078d7;
+        }
+        
+        QPushButton:pressed {
+            background-color: #e8f2ff;
+        }
+        """)
+
+        return add_button
