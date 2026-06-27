@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 from qfluentwidgets import TableWidget
 
 from core.data_loader import load_schedule
+from ui.theme import ADD_BTN_STYLE, TAB_WIDG_STYLE
 from ui.widgets.title_bar import TitleBar
 
 DAYS = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -35,40 +36,7 @@ class WeeklyPage(QWidget):
     def _build_tab_widget(self) -> QTabWidget:
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setDocumentMode(True)
-        self.tab_widget.setStyleSheet("""
-            QTabWidget::pane {
-                border          : none;
-                background      : transparent;
-            }
-
-            QTabBar {
-                background      : transparent;
-            }
-
-            QTabBar::tab {
-                background      : transparent;
-                color           : #6B6B69;
-                border          : 1px solid transparent;
-                border-radius   : 6px;
-                font-size       : 12.5px;
-                font-family     : 'Segoe UI', sans-serif;
-                padding         : 4px 14px;
-                margin          : 8px 2px;
-                min-height      : 30px;
-    }
-
-            QTabBar::tab:hover {
-                background      : #F0EFED;
-                color           : #1C1C1C;
-            }
-
-            QTabBar::tab:selected {
-                background      : #E8F3FE;
-                color           : #2383E2;
-                border          : 1px solid #B4D1F8;
-                font-weight     : 600;
-            }
-        """)
+        self.tab_widget.setStyleSheet(TAB_WIDG_STYLE)
 
         for day, entries in self._schedule.items():
             table = PlannerTable(self.tab_widget)
@@ -89,10 +57,7 @@ class PlannerTable(QWidget):
         layout = QVBoxLayout(self)
 
         self.table = self.create_table()
-        self.add_btn = self.create_btn()
-
         layout.addWidget(self.table)
-        layout.addWidget(self.add_btn)
 
     def create_table(self):
         table = TableWidget(self)
@@ -105,9 +70,9 @@ class PlannerTable(QWidget):
         hdr.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         hdr.setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
 
-        table.setColumnWidth(0, 110)
+        table.setColumnWidth(0, 130)
         table.setColumnWidth(2, 150)
-
+        table.setMouseTracking(False)
         table.setShowGrid(True)
 
         return table
@@ -116,31 +81,14 @@ class PlannerTable(QWidget):
         row = self.table.rowCount()
         self.table.insertRow(row)
 
-        body_font = QFont("Segoe UI", 13)
-
-        # Column 0 – Time
         time_column = QTableWidgetItem(time)
-        time_column.setFont(body_font)
-        time_column.setTextAlignment(
-            Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
-        )
         self.table.setItem(row, TIME_COL, time_column)
 
-        # Column 1 – Task
         task_column = QTableWidgetItem(task)
-        task_column.setFont(body_font)
-        task_column.setTextAlignment(
-            Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
-        )
         self.table.setItem(row, TASK_COL, task_column)
 
-        # Column 2 – Priority / Shift
         shift_column = QTableWidgetItem(shift)
-        shift_column.setFont(body_font)
         shift_column.setForeground(QColor("#ca2851"))
-        shift_column.setTextAlignment(
-            Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
-        )
         self.table.setItem(row, PRIORITY_COL, shift_column)
 
         self.table.setRowHeight(row, 46)
@@ -153,26 +101,7 @@ class PlannerTable(QWidget):
 
     def create_btn(self):
         add_button = QPushButton("+ Add Task")
-        add_button.setFixedHeight(60)   # Big height
-        add_button.setStyleSheet("""
-        QPushButton {
-            border: 2px dashed #888;
-            border-radius: 8px;
-            color: #555;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: left;
-            padding-left: 20px;
-        }
-        
-        QPushButton:hover {
-            border-color: #0078d7;
-            color: #0078d7;
-        }
-        
-        QPushButton:pressed {
-            background-color: #e8f2ff;
-        }
-        """)
+        add_button.setFixedHeight(60)
+        add_button.setStyleSheet(ADD_BTN_STYLE)
 
         return add_button

@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import QFrame,QHBoxLayout,QPushButton
 from qfluentwidgets import TitleLabel
 
+from ui.theme import ADD_BTN_STYLE
+
 class TitleBar(QFrame):
     def __init__(self,parent, h1: str):
         super().__init__(parent)
@@ -11,20 +13,5 @@ class TitleBar(QFrame):
         layout.addStretch()
 
         add_btn = QPushButton("+ Add Task")
-        add_btn.setStyleSheet(
-        """
-        QPushButton {
-            background    : #2383E2;
-            color         : #FFF;
-            border        : none;
-            border-radius : 6px;
-            font-size     : 13px;
-            font-weight   : 600;
-            font-family   : 'Segoe UI', sans-serif;
-            padding       : 7px 20px;
-        }
-        QPushButton:hover   { background: #1A73CE; }
-        QPushButton:pressed { background: #1260B5; }
-        """
-        )
+        add_btn.setStyleSheet(ADD_BTN_STYLE)
         layout.addWidget(add_btn)

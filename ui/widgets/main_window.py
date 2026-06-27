@@ -1,4 +1,4 @@
-from qfluentwidgets import FluentWindow, FluentIcon as FI,FluentStyleSheet
+from qfluentwidgets import FluentWindow, FluentIcon as FI
 from ui.pages.weekly_page import WeeklyPage
 
 class MainWindow(FluentWindow):
