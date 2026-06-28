@@ -1,6 +1,16 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout,QComboBox,QGraphicsDropShadowEffect,QHBoxLayout,QPushButton,QTextEdit,QWidget
+from PyQt6.QtWidgets import (QDialog,
+    QVBoxLayout,
+    QComboBox,
+    QGraphicsDropShadowEffect,
+    QHBoxLayout,
+    QPushButton,
+    QTextEdit,
+    QWidget,
+    QLabel
+)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
+from qfluentwidgets import TextEdit
 
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None):
@@ -30,11 +40,15 @@ class AddTaskDialog(QDialog):
             }
             """)
         card_layout = QVBoxLayout(self.card)
-        card_layout.setContentsMargins(24, 18, 24, 18)
+        card_layout.setContentsMargins(24, 5, 24, 18)
         card_layout.setSpacing(0)
 
         header = QHBoxLayout()
-        header.setSpacing(6)
+        header.setContentsMargins(0,0,0,0)
+
+        title = QLabel("Create Task")
+        title.setStyleSheet("color:#666666;font-size:17px;")
+        header.addWidget(title)
 
         close_btn = QPushButton("✕")
         close_btn.setFixedSize(28, 28)
@@ -51,21 +65,60 @@ class AddTaskDialog(QDialog):
         header.addWidget(close_btn)
 
         self.task_disc = QTextEdit()
-        self.task_disc.setPlaceholderText("Add Description....")
+        self.task_disc.setPlaceholderText("Write here...")
         self.task_disc.setFixedHeight(110)
-        self.task_disc.setFrameShape(QTextEdit.Shape.NoFrame)
         self.task_disc.setStyleSheet("""
             QTextEdit {
-                border: none;
-                font-size: 14px;
-                color: #555555;
+                border: 1px solid #777777;
+                border-radius: 6px;
+                font-size: 17px;
+                color: #444444;
                 background: transparent;
             }
         """)
         footer = QHBoxLayout()
         footer.setSpacing(8)
         footer.setContentsMargins(0, 12, 0, 0)
-        footer.addStretch()
+
+        priority = QComboBox(self)
+        priority.addItems(["Low","Medium","High"])
+        priority.setObjectName("priority")
+        priority.setStyleSheet("""
+        QComboBox#priority {
+            color: #6B6B69;
+            background: transparent;
+            border: 1px solid #777777;
+            border-radius: 6px;
+            padding: 4px 10px;
+            min-width: 100px;
+        }
+        
+        QComboBox#priority QAbstractItemView {
+            background: white;
+            border: 1px solid #777777;
+            border-radius: 6px;
+            outline: none;
+        }
+        
+        QComboBox#priority QAbstractItemView::item {
+            color: #6B6B69;
+            padding: 6px 10px;
+            min-height: 24px;
+        }
+        
+        QComboBox#priority QAbstractItemView::item:selected {
+            background: #2383E2;
+            color: white;
+        }
+        
+        QComboBox#priority QAbstractItemView::item:hover {
+            background: #1A73CE;
+            color: #ffffff;
+        }
+        """)
+        priority.setCurrentIndex(-1)        # No item selected
+        priority.setPlaceholderText("Priority")
+        footer.addWidget(priority)
         
         create_btn = QPushButton("Create Task")
         create_btn.setFixedHeight(40)
@@ -74,17 +127,18 @@ class AddTaskDialog(QDialog):
         create_btn.clicked.connect(self._on_create)
         create_btn.setStyleSheet("""
             QPushButton {
-                background: #00a86b;
+                background: #1A73CE;
                 color: white;
                 border: none;
-                border-radius: 20px;
+                border-radius: 6px;
                 padding: 0 24px;
                 font-size: 14px;
                 font-weight: 700;
             }
-            QPushButton:hover   { background: #009960; }
-            QPushButton:pressed { background: #008855; }
+            QPushButton:hover   { background: #2383E2; }
+            QPushButton:pressed { background: #1260B5; }
         """)
+        footer.addStretch()
         footer.addWidget(create_btn)
         
         card_layout.addLayout(header)
