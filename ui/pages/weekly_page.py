@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (
 )
 from qfluentwidgets import TableWidget
 
-from core.data_loader import load_schedule
+from core.data_loader import load_schedule, save_schedule
 from ui.theme import ADD_BTN_STYLE, TAB_WIDG_STYLE
 from ui.widgets.title_bar import TitleBar
 from ui.widgets.add_task_dialog import AddTaskDialog
@@ -55,6 +55,15 @@ class WeeklyPage(QWidget):
         planner_table: PlannerTable = self.tab_widget.widget(day_index)
         planner_table.add_task(time, task, priority)
         self.tab_widget.setCurrentIndex(day_index)
+        self._save_task()
+
+    def _save_task(self):
+        data = {}
+        for i in range(self.tab_widget.count()):
+            day = self.tab_widget.tabText(i)
+            table: PlannerTable = self.tab_widget.widget(i)
+            data[day] = table.get_entries()
+        save_schedule(data)
         
     def select_day(self, day: str) -> None:
         if day in DAYS:
@@ -115,3 +124,12 @@ class PlannerTable(QWidget):
         add_button.setStyleSheet(ADD_BTN_STYLE)
 
         return add_button
+
+    def get_entries(self) -> list[list]:
+        entries = []
+        for row in range(self.table.rowCount()):
+            time = self.table.item(row, TIME_COL).text()
+            task = self.table.item(row, TASK_COL).text()
+            priority = self.table.item(row, PRIORITY_COL).text()
+            entries.append([time, task, priority])
+        return entries
