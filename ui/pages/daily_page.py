@@ -1,14 +1,10 @@
 from PyQt6.QtWidgets import QHBoxLayout, QScrollArea, QVBoxLayout, QWidget, QFrame
 from qfluentwidgets import PrimaryPushButton, ProgressRing, TransparentPushButton, FluentIcon as FI
 
+from core.data_loader import get_todays_tasks, load_tasks
+from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.card import SimpleCard, TaskCard
 from ui.widgets.title_bar import TitleBar
-TEST_LIST = [
-    ["12:00 am","Walking 3 hours","Medium"],
-    ["2:00 pm","Study Python/AI/ML","High"],
-    ["5:00 pm","Jogging","Low"],
-    ["7:30 pm","Learn German","Medium"]
-]
 
 class DailyPage(QWidget):
     
@@ -17,6 +13,8 @@ class DailyPage(QWidget):
         # main Layout of this page
         self.page_layout = QVBoxLayout(self)
         self.page_layout.setContentsMargins(0,0,0,0)
+        get_todays_tasks("Mon")
+        self.tasks = load_tasks()
         
         self._build_ui()
 
@@ -60,11 +58,12 @@ class DailyPage(QWidget):
         add_btn = PrimaryPushButton(FI.ADD,"Add Task")
         footer.addWidget(add_btn)
         self.page_layout.addLayout(footer)
-        
 
-        for tasks in TEST_LIST:
-            time,task,prio = tasks
+        for tasks in self.tasks:
+            time = tasks["time"]
+            task = tasks["task"]
+            prio = tasks["priority"]
             self.list_layout.addWidget(TaskCard(time,task,prio))
         self.list_layout.addStretch(1)
-        
+
         
