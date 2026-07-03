@@ -1,23 +1,34 @@
 from PyQt6.QtWidgets import QHBoxLayout, QScrollArea, QVBoxLayout, QWidget, QFrame
-from qfluentwidgets import InfoBar, InfoBarPosition, PrimaryPushButton, ProgressRing, TransparentPushButton, FluentIcon as FI
-
+from qfluentwidgets import (InfoBar, 
+    InfoBarPosition, 
+    PrimaryPushButton,
+    ProgressRing, 
+    TransparentPushButton,
+    FluentIcon as FI
+)
+from config import current_day
 from core.data_loader import load_todays_tasks, save_todays_tasks
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.card import SimpleCard, TaskCard
 from ui.widgets.title_bar import TitleBar
+from core.utils.logger import logger
 
 class DailyPage(QWidget):
+    """Daily page showing today's tasks with progress tracking and also many features."""
     
     def __init__(self, parent) -> None:
         super().__init__(parent)
+        logger.info("Initializing DailyPage")
         # main Layout of this page
         self.page_layout = QVBoxLayout(self)
         self.page_layout.setContentsMargins(0,0,0,0)
-        self.tasks = load_todays_tasks("Mon")
+        self.tasks = load_todays_tasks(current_day)
         
         self._build_ui()
+        logger.info(f"DailyPage initialized with {len(self.tasks)} tasks")
 
     def _build_ui(self):
+        """Build the UI components for the daily page."""
         # ======= Header =========
         # title shown on top of the page
         self.title = TitleBar(self,"My Task")
