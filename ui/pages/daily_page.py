@@ -6,7 +6,7 @@ from qfluentwidgets import (InfoBar,
     TransparentPushButton,
     FluentIcon as FI
 )
-from config import current_day
+from config import INFO_BAR_DURATION_SHORT, current_day
 from core.data_loader import load_todays_tasks, save_todays_tasks
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.card import SimpleCard, TaskCard
@@ -63,6 +63,7 @@ class DailyPage(QWidget):
         # clear complete and Add Task Button Area
         footer = QHBoxLayout()
         self.clr_task_btn = TransparentPushButton("Clear Completed")
+        self.clr_task_btn.clicked.connect(self._on_clear_completed)
         footer.addWidget(self.clr_task_btn)
         footer.addStretch(1)
         add_btn = PrimaryPushButton(FI.ADD,"Add Task")
@@ -72,11 +73,15 @@ class DailyPage(QWidget):
         for tasks in self.tasks:
             card = TaskCard(tasks)
             card.checkbox_changed.connect(self.update_stats)
+            card.edit_clicked.connect(self._on_edit_task)
+            card.delete_clicked.connect(self._on_delete_task)
             self.list_layout.addWidget(card)
             
         self.list_layout.addStretch(1)
 
     def _add_task(self, time,task_name, priority):
+        """Add a new task to the task list."""
+        
         task = {
             "time": time,
             "task" : task_name,
@@ -88,15 +93,26 @@ class DailyPage(QWidget):
         InfoBar.success(
             title="Task added",
             content=task,
-            duration=1800,
+            duration=INFO_BAR_DURATION_SHORT,
             position=InfoBarPosition.TOP,
             parent=self,
         )
     def update_stats(self, checked=None):
+        """Update progress ring based on completed tasks."""
         total = len(self.tasks)
         completed = sum(1 for t in self.tasks if t["done"])
         percent = int(completed / total * 100) if total else 0
         
         self.progress_ring.setValue(percent)
+
+    def _on_edit_task(self, task: dict):
+        ...
+    def _on_delete_task(self, task: dict):
+        ...
+    def _on_clear_completed(self):
+        ...
+
+    def _refresh_task_list(self):
+        ...
 
         

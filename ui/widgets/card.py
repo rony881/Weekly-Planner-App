@@ -13,6 +13,9 @@ HEIGHT = UI_CONFIG["card_height"]
 
 class TaskCard(CardWidget):
     checkbox_changed = pyqtSignal(bool)
+    edit_clicked = pyqtSignal(dict)
+    delete_clicked = pyqtSignal(dict)
+    
     def __init__(self, task: dict):
         super().__init__()
         self.setFixedHeight(HEIGHT)
@@ -49,9 +52,11 @@ class TaskCard(CardWidget):
         layout.addWidget(prio_lbl)
 
         edit_btn = TransparentToolButton(FI.EDIT)
+        edit_btn.clicked.connect(lambda: self.edit_clicked.emit(self.task))
         layout.addWidget(edit_btn)
         
         delete_btn = TransparentToolButton(FI.DELETE)
+        delete_btn.clicked.connect(lambda: self.delete_clicked.emit(self.task))
         layout.addWidget(delete_btn)
 
     def on_checked(self, checked):
