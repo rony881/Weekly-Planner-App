@@ -12,14 +12,17 @@ from PyQt6.QtCore import pyqtSignal,Qt
 from PyQt6.QtGui import QColor
 from qfluentwidgets import AMTimePicker
 from config import PRIORITIES,UI_CONFIG
-
+from core.utils.logger import logger
 DIALOG_WIDTH = UI_CONFIG["dialog_width"]
 DIALOG_HEIGHT = UI_CONFIG["dialog_height"]
 
 class AddTaskDialog(QDialog):
+    """Dialog for creating new tasks with time, description, and priority."""
+    
     task_created = pyqtSignal(int, str, str, str)
     
     def __init__(self, parent=None,day_index=None):
+        """Initialize add task dialog."""
         super().__init__(parent)
         self.day_index = day_index
         self.setWindowTitle("Add Task")
@@ -30,11 +33,12 @@ class AddTaskDialog(QDialog):
             Qt.WindowType.FramelessWindowHint |
             Qt.WindowType.Dialog)
 
-        
+        logger.info(f"Opening AddTaskDialog for day index {day_index}")
         self._setup_ui()
         self._add_shadow()
         
     def _setup_ui(self):
+        """Set up the dialog UI components."""
         outer = QVBoxLayout(self)
         outer.setContentsMargins(24, 24, 24, 24)
 
@@ -73,10 +77,10 @@ class AddTaskDialog(QDialog):
         header.addStretch()
         header.addWidget(close_btn)
 
-        self.task_disc = QTextEdit()
-        self.task_disc.setPlaceholderText("Write here...")
-        self.task_disc.setFixedHeight(110)
-        self.task_disc.setStyleSheet("""
+        self.task_input = QTextEdit()
+        self.task_input.setPlaceholderText("Write here...")
+        self.task_input.setFixedHeight(110)
+        self.task_input.setStyleSheet("""
             QTextEdit {
                 border: none;
                 border-radius: 6px;
@@ -156,14 +160,15 @@ class AddTaskDialog(QDialog):
         footer.addWidget(create_btn)
         
         card_layout.addLayout(header)
-        card_layout.addWidget(self.task_disc)
+        card_layout.addWidget(self.task_input)
         card_layout.addLayout(footer)
 
         outer.addWidget(self.card)
 
         
     def _on_create(self):
-        task = self.task_disc.toPlainText().strip()
+        """Handle create task button click - validates and emits task data."""
+        task = self.task_input.toPlainText().strip()
         time = self.time.getTime().toString("hh:mm AP")
         prio = self.priority.currentText()
     
@@ -174,6 +179,7 @@ class AddTaskDialog(QDialog):
         self.accept()
         
     def _add_shadow(self):
+        """Add drop shadow effect to the dialog card."""
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(48)
         shadow.setXOffset(0)
