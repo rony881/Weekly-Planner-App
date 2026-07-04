@@ -13,13 +13,16 @@ from core.data_loader import load_schedule, save_schedule
 from ui.theme import ADD_BTN_STYLE, TAB_WIDG_STYLE
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.title_bar import TitleBar
-from config import DAYS, TIME_COL, TASK_COL, PRIORITY_COL
-
+from config import DAYS, TABLE_ROW_HEIGHT, TIME_COL, TASK_COL, PRIORITY_COL
+from core.utils.logger import logger
 
 class WeeklyPage(QWidget):
+    """Weekly page showing schedule in tabbed table format."""
 
     def __init__(self, parent: "QWidget|None") -> None:
+        """Initialize weekly page with schedule data."""
         super().__init__(parent)
+        logger.info("Weekly Page Initialized Successfully")
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
@@ -31,6 +34,7 @@ class WeeklyPage(QWidget):
         layout.addWidget(self._build_tab_widget())
 
     def _build_tab_widget(self) -> QTabWidget:
+        """Build the tab widget containing schedule tables for each day."""
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setDocumentMode(True)
         self.tab_widget.setStyleSheet(TAB_WIDG_STYLE)
@@ -43,17 +47,20 @@ class WeeklyPage(QWidget):
         return self.tab_widget
 
     def show_add_task_dialog(self):
+        """Show the add task dialog for the current tab."""
         dialog = AddTaskDialog(self,self.tab_widget.currentIndex())
         dialog.task_created.connect(self._on_task_created)
         dialog.exec()
     
     def _on_task_created(self, day_index: str, time: str, task: str, priority: str):
+        """Handle task creation from dialog."""
         planner_table: PlannerTable = self.tab_widget.widget(day_index)
         planner_table.add_task(time, task, priority)
         self.tab_widget.setCurrentIndex(day_index)
         self._save_task()
 
     def _save_task(self):
+        """Save all tasks from all tabs to the schedule file."""
         data = {}
         for i in range(self.tab_widget.count()):
             day = self.tab_widget.tabText(i)
@@ -62,12 +69,16 @@ class WeeklyPage(QWidget):
         save_schedule(data)
         
     def select_day(self, day: str) -> None:
+        """Select the tab for the specified day."""
         if day in DAYS:
             self.tab_widget.setCurrentIndex(DAYS.index(day))
 
 class PlannerTable(QWidget):
+    """Table widget for displaying and managing schedule entries."""
 
     def __init__(self, parent=None):
+        """Initialize planner table with table widget."""
+        
         super().__init__(parent)
         layout = QVBoxLayout(self)
 
@@ -75,6 +86,7 @@ class PlannerTable(QWidget):
         layout.addWidget(self.table)
 
     def create_table(self):
+        """Create and configure the table widget."""
         table = TableWidget(self)
 
         table.setColumnCount(3)
@@ -88,11 +100,13 @@ class PlannerTable(QWidget):
         table.setColumnWidth(0, 130)
         table.setColumnWidth(2, 150)
         table.setMouseTracking(False)
-        table.setShowGrid(True)
+        table.setShowGrid(False)
 
         return table
 
     def add_task(self, time: str, task: str, shift: str) -> int:
+        """Add a task row to the table."""
+        
         row = self.table.rowCount()
         self.table.insertRow(row)
 
@@ -102,19 +116,21 @@ class PlannerTable(QWidget):
         task_column = QTableWidgetItem(task)
         self.table.setItem(row, TASK_COL, task_column)
 
-        shift_column = QTableWidgetItem(shift)
-        shift_column.setForeground(QColor("#ca2851"))
-        self.table.setItem(row, PRIORITY_COL, shift_column)
+        priority_column = QTableWidgetItem(shift)
+        priority_column.setForeground(QColor("#ca2851"))
+        self.table.setItem(row, PRIORITY_COL, priority_column)
 
-        self.table.setRowHeight(row, 46)
+        self.table.setRowHeight(row, TABLE_ROW_HEIGHT)
         return row
 
     def load_data(self, entries: list[list]) -> None:
+        """Load schedule entries into the table."""
         self.table.setRowCount(0)
         for time, task, priority in entries:
             self.add_task(time, task, priority)
 
     def create_btn(self):
+        """Create an add task button."""
         add_button = QPushButton("+ Add Task")
         add_button.setFixedHeight(60)
         add_button.setStyleSheet(ADD_BTN_STYLE)
@@ -122,6 +138,7 @@ class PlannerTable(QWidget):
         return add_button
 
     def get_entries(self) -> list[list]:
+        """Get all entries from the table."""
         entries = []
         for row in range(self.table.rowCount()):
             time = self.table.item(row, TIME_COL).text()
