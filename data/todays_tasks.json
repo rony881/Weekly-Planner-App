@@ -1,26 +1,50 @@
 [
     {
         "time": "09:00 AM",
-        "task": "Meal Prep",
-        "priority": "Medium",
+        "task": "Morning Walk",
+        "priority": "Low",
+        "done": false
+    },
+    {
+        "time": "10:00 AM",
+        "task": "Team Standup",
+        "priority": "High",
         "done": false
     },
     {
         "time": "11:00 AM",
-        "task": "Family Time",
-        "priority": "High",
+        "task": "Code Review",
+        "priority": "Medium",
+        "done": false
+    },
+    {
+        "time": "12:30 PM",
+        "task": "Lunch Break",
+        "priority": "Low",
+        "done": false
+    },
+    {
+        "time": "02:00 PM",
+        "task": "Feature Development",
+        "priority": "Critical",
         "done": false
     },
     {
         "time": "04:00 PM",
-        "task": "Next-week Planning",
+        "task": "Reply to Emails",
+        "priority": "Medium",
+        "done": false
+    },
+    {
+        "time": "05:30 PM",
+        "task": "Gym Session",
         "priority": "High",
         "done": false
     },
     {
-        "time": "10:44 PM",
-        "task": "hello world",
-        "priority": "High",
+        "time": "10:55 AM",
+        "task": "Master degree",
+        "priority": "Medium",
         "done": false
     }
 ]

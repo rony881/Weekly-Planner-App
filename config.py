@@ -17,6 +17,7 @@ DATA_DIR = BASE_DIR / "data"
 # ============ File Names ============
 WEEKLY_SCHEDULE_FILE = DATA_DIR / "weekly_schedule.json"
 TODAYS_TASKS_FILE = DATA_DIR / "todays_tasks.json"
+LAST_LOADED_DAY_FILE = DATA_DIR / "last_loaded_day.txt"
 
 # ============ UI Configuration ============
 UI_CONFIG = {

@@ -1,6 +1,6 @@
 # core/data_loader.py
 import json
-from config import WEEKLY_SCHEDULE_FILE,TODAYS_TASKS_FILE
+from config import LAST_LOADED_DAY_FILE, WEEKLY_SCHEDULE_FILE,TODAYS_TASKS_FILE
 from core.utils.logger import logger
 from core.models.task import Task
 
@@ -39,6 +39,18 @@ def save_schedule(data: dict) -> None:
         logger.error(f"Failed to save schedule file: {e}")
         raise
 
+def last_loaded_day() -> str | None:
+    try:
+        return LAST_LOADED_DAY_FILE.read_text(encoding="utf-8").strip()
+    except OSError :
+        return None
+
+def save_todays_day(day: str) -> None:
+    try:
+        LAST_LOADED_DAY_FILE.parent.mkdir(parents=True, exist_ok=True)
+        LAST_LOADED_DAY_FILE.write_text(day, encoding="utf-8")
+    except OSError as e:
+        logger.error(f"Failed to write last loaded day: {e}")
 
 def load_todays_tasks(day: str) -> list[Task]:
     """Load today's tasks for the specified day."""
@@ -49,7 +61,7 @@ def load_todays_tasks(day: str) -> list[Task]:
             logger.warning(f"Day '{day}' not found in schedule")
             return []
         
-        if not TODAYS_TASKS_FILE.exists():
+        if last_loaded_day() != day or not TODAYS_TASKS_FILE.exists():
             daily_tasks = []
             for time, task, prio in schedule[day]:
                 daily_tasks.append(Task(
@@ -59,6 +71,7 @@ def load_todays_tasks(day: str) -> list[Task]:
                     done=False
                 ))
             save_todays_tasks(daily_tasks)
+            save_todays_day(day)
         
         with open(TODAYS_TASKS_FILE, "r", encoding="utf-8") as f:
             tasks_data = json.load(f)
