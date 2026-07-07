@@ -6,7 +6,6 @@ from PyQt6.QtWidgets import (
 from qfluentwidgets import CardWidget, CheckBox, TransparentToolButton, FluentIcon as FI
 from qfluentwidgets.components.date_time.calendar_view import QVBoxLayout
 from core.models.task import Task
-# from core.utils.logger import logger
 
 from config import UI_CONFIG
 HEIGHT = UI_CONFIG["card_height"]
