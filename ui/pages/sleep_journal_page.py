@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget,QHBoxLayout
 from qfluentwidgets import FluentIcon, IconWidget, ProgressBar, TransparentToolButton
 from qfluentwidgets.components import CardWidget
-from config import UI_CONFIG
+from config import PRIMARAY_FONT, SECONDARY_FONT, UI_CONFIG
 from core.utils.logger import logger
 
 HEIGHT = 67
@@ -48,7 +48,7 @@ class SleepCard(CardWidget):
 
         # Main Layout
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(13, 13, 13, 10)
+        layout.setContentsMargins(15, 10, 15, 10)
         layout.setSpacing(15)
 
         # Icon
@@ -61,14 +61,14 @@ class SleepCard(CardWidget):
         t_d_Layout.setSpacing(4)
 
         self.date = QLabel(self.logs["date"])
-        self.date.setStyleSheet("""
-            font-size:16px;
+        self.date.setStyleSheet(f"""
+            font-size: {PRIMARAY_FONT}px;
             font-weight:bold;
         """)
 
         self.sleep_time = QLabel(self.logs["time"])
-        self.sleep_time.setStyleSheet("""
-            font-size:13px;
+        self.sleep_time.setStyleSheet(f"""
+            font-size: {SECONDARY_FONT}px;
             color:#666666;
         """)
 
@@ -81,8 +81,8 @@ class SleepCard(CardWidget):
         due_prog_Layout.setSpacing(4)
 
         self.duration = QLabel(self.logs["duration"])
-        self.duration.setStyleSheet("""
-            font-size:16px;
+        self.duration.setStyleSheet(f"""
+            font-size:{PRIMARAY_FONT}px;
             font-weight:bold;
         """)
         due_prog_Layout.addWidget(self.duration)
@@ -92,8 +92,8 @@ class SleepCard(CardWidget):
         due_prog_Layout.addWidget(self.due_prog)
 
         self.score = QLabel("Score:"+ str(self.logs["score"]))
-        self.score.setStyleSheet("""
-            font-size:14px;
+        self.score.setStyleSheet(f"""
+        font-size:{SECONDARY_FONT}px;
             font-weight:bold;
         """)
 
