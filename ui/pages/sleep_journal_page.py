@@ -1,116 +1,145 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget,QHBoxLayout
-from qfluentwidgets import FluentIcon, IconWidget, ProgressBar, TransparentToolButton
-from qfluentwidgets.components import CardWidget
+from PyQt6.QtWidgets import QLabel, QTableWidget, QVBoxLayout, QWidget,QHBoxLayout,QTableWidgetItem
+from qfluentwidgets import TableWidget
 from config import PRIMARAY_FONT, SECONDARY_FONT, UI_CONFIG
 from core.utils.logger import logger
 
 HEIGHT = 67
-SLEEP_LOG = {
-    "date" : "Mon, Jul 6",
-    "time" : "12:32 pm - 8:45 am",
-    "duration" : "7.67 hrs",
-    "score" : 86,
-    "mood" : "🙂  Good"
-}
+SLEEP_LOGS = [
+    {
+        "date": "Mon, Jul 6",
+        "bedtime": "11:20 PM",
+        "wakeup": "7:10 AM",
+        "duration": "7h 50m",
+        "score": 91,
+        "quality": "😴 Excellent"
+    },
+    {
+        "date": "Tue, Jul 7",
+        "bedtime": "12:05 AM",
+        "wakeup": "7:45 AM",
+        "duration": "7h 40m",
+        "score": 88,
+        "quality": "🙂 Good"
+    },
+    {
+        "date": "Wed, Jul 8",
+        "bedtime": "11:50 PM",
+        "wakeup": "6:55 AM",
+        "duration": "7h 05m",
+        "score": 82,
+        "quality": "🙂 Good"
+    },
+    {
+        "date": "Thu, Jul 9",
+        "bedtime": "1:10 AM",
+        "wakeup": "7:00 AM",
+        "duration": "5h 50m",
+        "score": 63,
+        "quality": "😐 Fair"
+    },
+    {
+        "date": "Fri, Jul 10",
+        "bedtime": "10:45 PM",
+        "wakeup": "7:15 AM",
+        "duration": "8h 30m",
+        "score": 96,
+        "quality": "🤩 Excellent"
+    },
+    {
+        "date": "Sat, Jul 11",
+        "bedtime": "2:00 AM",
+        "wakeup": "8:20 AM",
+        "duration": "6h 20m",
+        "score": 70,
+        "quality": "😕 Fair"
+    },
+    {
+        "date": "Sun, Jul 12",
+        "bedtime": "11:35 PM",
+        "wakeup": "8:00 AM",
+        "duration": "8h 25m",
+        "score": 94,
+        "quality": "😴 Excellent"
+    },
+    {
+        "date": "Mon, Jul 13",
+        "bedtime": "12:40 AM",
+        "wakeup": "6:30 AM",
+        "duration": "5h 50m",
+        "score": 61,
+        "quality": "😣 Poor"
+    },
+    {
+        "date": "Tue, Jul 14",
+        "bedtime": "11:15 PM",
+        "wakeup": "7:20 AM",
+        "duration": "8h 05m",
+        "score": 92,
+        "quality": "😊 Excellent"
+    },
+    {
+        "date": "Wed, Jul 15",
+        "bedtime": "12:10 AM",
+        "wakeup": "7:05 AM",
+        "duration": "6h 55m",
+        "score": 79,
+        "quality": "🙂 Good"
+    }
+]
 
 class SleepJournal(QWidget):
-    """Slepp Journal Page"""
+    """Sleep Journal Page"""
     def __init__(self, parent) -> None:
         super().__init__(parent)
         logger.info("Sleep Journal Page Initialized Successfully")
-        self.main_layout = QVBoxLayout(self)
+
+        self.table = TableWidget()
 
         self._build_ui()
+        self._creat_table()
 
+        for log in SLEEP_LOGS:
+            self.add_sleep_log(log)
+        
     def _build_ui(self):
-        self.main_layout.addWidget(SleepCard(self,SLEEP_LOG))
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.table)
 
-class SleepCard(CardWidget):
-    """Card Widget Displaying Sleep Logs"""
+    def _creat_table(self):
+        self.table.setColumnCount(6)
+        self.table.setHorizontalHeaderLabels([
+            "Date",
+            "Bedtime",
+            "Wake Up",
+            "Duration",
+            "score",
+            "quality"
+        ])
+        header = self.table.horizontalHeader()
+        header.setStretchLastSection(True)
+        header.setSectionResizeMode(header.ResizeMode.Stretch)
 
-    def __init__(self, parent, logs: dict):
-        super().__init__(parent)
-
-        self.logs = logs
-        self.setFixedHeight(HEIGHT)
-
-        self.setStyleSheet("""
-            CardWidget{
-                border: 1px solid #999999;
-                border-radius: 8px;
-            }
-
-            QLabel{
-                color: #333333;
-            }
-        """)
-
-        # Main Layout
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(15, 10, 15, 10)
-        layout.setSpacing(15)
-
-        # Icon
-        self.icon = IconWidget(FluentIcon.CALENDAR)
-        self.icon.setFixedSize(24, 24)
-        layout.addWidget(self.icon, alignment=Qt.AlignmentFlag.AlignTop)
-
-        # ============= Time and Date Layout ==============
-        t_d_Layout = QVBoxLayout()
-        t_d_Layout.setSpacing(4)
-
-        self.date = QLabel(self.logs["date"])
-        self.date.setStyleSheet(f"""
-            font-size: {PRIMARAY_FONT}px;
-            font-weight:bold;
-        """)
-
-        self.sleep_time = QLabel(self.logs["time"])
-        self.sleep_time.setStyleSheet(f"""
-            font-size: {SECONDARY_FONT}px;
-            color:#666666;
-        """)
-
-        t_d_Layout.addWidget(self.date)
-        t_d_Layout.addWidget(self.sleep_time)
-        # =================================================
+        self.table.setAlternatingRowColors(True)
+        self.table.setBorderVisible(False)
+        self.table.setWordWrap(False)
         
-        # ============== sleep Duration and Progress ======
-        due_prog_Layout = QVBoxLayout()
-        due_prog_Layout.setSpacing(4)
+    def add_sleep_log(self,log: dict):
+        row = self.table.rowCount()
+        self.table.insertRow(row)
 
-        self.duration = QLabel(self.logs["duration"])
-        self.duration.setStyleSheet(f"""
-            font-size:{PRIMARAY_FONT}px;
-            font-weight:bold;
-        """)
-        due_prog_Layout.addWidget(self.duration)
+        values = [
+            log["date"],
+            log["bedtime"],
+            log["wakeup"],
+            log["duration"],
+            log["score"],
+            log["quality"]
+        ]
 
-        self.due_prog = ProgressBar()
-        self.due_prog.setValue(80)
-        due_prog_Layout.addWidget(self.due_prog)
-
-        self.score = QLabel("Score:"+ str(self.logs["score"]))
-        self.score.setStyleSheet(f"""
-        font-size:{SECONDARY_FONT}px;
-            font-weight:bold;
-        """)
-
-        self.mood = QLabel(self.logs["mood"])
-        self.mood.setStyleSheet("""
-            font-size:14px;
-            font-weight:bold;
-        """)
-
-        edit_btn = TransparentToolButton(FluentIcon.EDIT)
-        delete_btn = TransparentToolButton(FluentIcon.DELETE)
-        
-
-        layout.addLayout(t_d_Layout)
-        layout.addLayout(due_prog_Layout)
-        layout.addWidget(self.score)
-        layout.addWidget(self.mood)
-        layout.addStretch()
-        layout.addWidget(edit_btn)
-        layout.addWidget(delete_btn)
+        for column, value in enumerate(values):
+            self.table.setItem(
+                row,
+                column,
+                QTableWidgetItem(str(value))
+            )
