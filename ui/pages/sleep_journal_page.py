@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QTableWidget, QVBoxLayout, QWidget,QHBoxLayout,QTableWidgetItem
-from qfluentwidgets import TableWidget
+from qfluentwidgets import CardWidget, TableWidget
 from config import PRIMARAY_FONT, SECONDARY_FONT, UI_CONFIG
 from core.utils.logger import logger
 
@@ -95,11 +95,13 @@ class SleepJournal(QWidget):
         logger.info("Sleep Journal Page Initialized Successfully")
 
         self.table = SleepHistory(self,SLEEP_LOGS)
+        self.top_widget = TopVisualArea()
 
         self._build_ui()
         
     def _build_ui(self):
         layout = QVBoxLayout(self)
+        layout.addWidget(self.top_widget)
         layout.addWidget(self.table)
         
 
@@ -154,3 +156,14 @@ class SleepHistory(TableWidget):
                 column,
                 QTableWidgetItem(str(value))
             )
+
+class TopVisualArea(CardWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        logger.info("Sleep Journal Page Initialized Successfully")
+        self.setFixedHeight(180)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(12,8,12,8)
+        layout.setSpacing(12)
+        
