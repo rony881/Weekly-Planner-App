@@ -100,10 +100,15 @@ class SleepJournal(QWidget):
         
     def _build_ui(self):
         layout = QVBoxLayout(self)
+        
+        layout.addLayout(self.statistics())
+        layout.addWidget(self.table)
+        
+    def statistics(self):
         # ---- Stat cards ----
         statsGrid = QGridLayout()
         statsGrid.setSpacing(12)
-
+        
         self.avg_sleep = StatsCard(
             self,
             FluentIcon.QUIET_HOURS,
@@ -137,10 +142,8 @@ class SleepJournal(QWidget):
         statsGrid.addWidget(self.Consistency ,0,1)
         statsGrid.addWidget(self.sleep_dbt,0,2)
         statsGrid.addWidget(self.streak,0,3)
-
-        layout.addLayout(statsGrid)
-        layout.addWidget(self.table)
         
+        return statsGrid
 
 class SleepHistory(TableWidget):
     def __init__(self, parent, sleep_logs):
