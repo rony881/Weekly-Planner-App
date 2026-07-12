@@ -1,6 +1,6 @@
 # core/data_loader.py
 import json
-from config import LAST_LOADED_DAY_FILE, WEEKLY_SCHEDULE_FILE,TODAYS_TASKS_FILE
+from config import LAST_LOADED_DAY_FILE, SLEEP_LOGS_FILE, WEEKLY_SCHEDULE_FILE,TODAYS_TASKS_FILE
 from core.utils.logger import logger
 from core.models.task import Task
 
@@ -98,4 +98,27 @@ def save_todays_tasks(tasks: list[Task]) -> None:
         
     except OSError as e:
         logger.error(f"Failed to save tasks file: {e}")
+        raise
+
+
+def load_sleep_logs() -> list[dict]:
+    """Loads Sleep Logs History From JSON File """
+
+    if not SLEEP_LOGS_FILE.exists():
+        logger.error(f"File not found: {SLEEP_LOGS_FILE}")
+        raise FileNotFoundError(f"File not found: {SLEEP_LOGS_FILE}")
+
+    try:
+        with open(SLEEP_LOGS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            logger.info(f"Successfully Loaded {SLEEP_LOGS_FILE}")
+
+            return data
+            
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in schedule file: {e}")
+        raise
+
+    except OSError as e:
+        logger.error(f"Failed to read schedule file: {e}")
         raise
