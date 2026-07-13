@@ -19,15 +19,16 @@ class MainWindow(FluentWindow):
         logger.info("Initializing MainWindow")
         self.resize(WINDOW_WIDTH,WINDOW_HEIGHT)
         self.navigationInterface.setExpandWidth(NAVI_WIDTH)
+        self.stackedWidget.setAnimationEnabled(False)
 
         # ============ Weekly Page ================
-        # self.weekly_page = WeeklyPage(self)
-        # self.weekly_page.setObjectName("weekly_page")
+        self.weekly_page = WeeklyPage(self)
+        self.weekly_page.setObjectName("weekly_page")
         # =========================================
 
         # ============ Daily Page ================
-        # self.daily_page = DailyPage(self)
-        # self.daily_page.setObjectName("daily_page")
+        self.daily_page = DailyPage(self)
+        self.daily_page.setObjectName("daily_page")
         # =========================================
         
         # ============ Sleep Journal ==============
@@ -40,6 +41,6 @@ class MainWindow(FluentWindow):
     def _setup_main_panel(self):
         """Set up the navigation panel with sub-interfaces."""
         
-        # self.addSubInterface(self.weekly_page,FI.DOCUMENT,"Weekly Page")
-        # self.addSubInterface(self.daily_page,FI.DOCUMENT,"Daily Page")
+        self.addSubInterface(self.weekly_page,FI.DOCUMENT,"Weekly Page")
+        self.addSubInterface(self.daily_page,FI.DOCUMENT,"Daily Page")
         self.addSubInterface(self.sleep_journal,FI.LEAF,"Sleep Journal")
