@@ -24,11 +24,11 @@ class WeeklyPage(QWidget):
         super().__init__(parent)
         logger.info("Weekly Page Initialized Successfully")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(24, 24, 24, 24)
         layout.setSpacing(0)
 
         self._schedule = load_schedule()
-        self.title_bar = TitleBar(self,"📅 Weekly Schedule",btn=True)
+        self.title_bar = TitleBar(self,"Weekly Schedule",btn=True)
 
         layout.addWidget(self.title_bar)
         layout.addWidget(self._build_tab_widget())

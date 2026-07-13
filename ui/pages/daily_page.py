@@ -23,7 +23,7 @@ class DailyPage(QWidget):
         logger.info("Initializing DailyPage")
         # main Layout of this page
         self.page_layout = QVBoxLayout(self)
-        self.page_layout.setContentsMargins(0,0,0,0)
+        self.page_layout.setContentsMargins(24,24,24,24)
         self.tasks = load_todays_tasks(current_day)
         
         self._build_ui()
