@@ -20,6 +20,9 @@ class MainWindow(FluentWindow):
         self.resize(WINDOW_WIDTH,WINDOW_HEIGHT)
         self.navigationInterface.setExpandWidth(NAVI_WIDTH)
         self.stackedWidget.setAnimationEnabled(False)
+        self.navigationInterface.panel.setStyleSheet("""
+            background-color : #e4ded2;
+        """)
 
         # ============ Weekly Page ================
         self.weekly_page = WeeklyPage(self)
