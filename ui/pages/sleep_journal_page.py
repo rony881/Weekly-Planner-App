@@ -5,7 +5,6 @@ from core.data_loader import load_sleep_logs
 from core.utils.logger import logger
 from ui.widgets.stats_card import StatsCard
 
-HEIGHT = 67
 
 class SleepJournal(QWidget):
     """Sleep Journal Page"""
@@ -67,7 +66,7 @@ class SleepJournal(QWidget):
             FluentIcon.CERTIFICATE,
             "Current streak"
         )
-        
+
         statsGrid.addWidget(self.avg_sleep,0,0)
         statsGrid.addWidget(self.Consistency ,0,1)
         statsGrid.addWidget(self.sleep_dbt,0,2)
@@ -109,6 +108,7 @@ class SleepHistory(TableWidget):
         for log in sleep_logs:
             self.add_sleep_log(log)
 
+        logger.info("Sleep History Loaded Successfully")
     
     def add_sleep_log(self, log: dict):
         row = self.rowCount()
@@ -129,3 +129,5 @@ class SleepHistory(TableWidget):
                 column,
                 QTableWidgetItem(str(value))
             )
+
+        logger.info("New Sleep Log Added Successfully")

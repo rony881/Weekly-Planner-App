@@ -1,10 +1,13 @@
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from qfluentwidgets import CaptionLabel, CardWidget, IconWidget,StrongBodyLabel
+from core.utils.logger import logger
 
 
 class StatsCard(CardWidget):
+    """Creats a Card for Showing Statistics"""
     def __init__(self, parent, icon, title: str):
         super().__init__(parent)
+        logger.info("Initialising the Stats Card")
         
         layout = QVBoxLayout(self)
         self.setFixedHeight(112)
@@ -26,7 +29,7 @@ class StatsCard(CardWidget):
         layout.addLayout(top)
 
         # ------- Value Label ------
-        self.valueLabel = StrongBodyLabel("_", self)
+        self.valueLabel = StrongBodyLabel("__", self)
         self.valueLabel.setStyleSheet("""
             font-size:25px;
             color:#3a3a3a;
@@ -38,7 +41,8 @@ class StatsCard(CardWidget):
         layout.addWidget(self.subLabel)
         layout.addStretch(1)
 
-    def set_Value(self, value: str, sub: str):
-        self.valueLabel.setText(value)
+    def set_Value(self, value: int, sub: str):
+        self.valueLabel.setText(str(value))
         self.subLabel.setText(sub)
-                
+        logger.info("Value & subtitle was given")
+        logger.info(f"Value: {value} subtitle: {sub}")
