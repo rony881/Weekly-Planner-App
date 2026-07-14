@@ -21,7 +21,13 @@ class MainWindow(FluentWindow):
         self.navigationInterface.setExpandWidth(NAVI_WIDTH)
         self.stackedWidget.setAnimationEnabled(False)
         self.navigationInterface.panel.setStyleSheet("""
-            background-color : #e4ded2;
+            background-color : #e4dad5;
+        """)
+        self.stackedWidget.setStyleSheet("""
+        QStackedWidget {
+            border-top-left-radius: 0px;
+            background-color: #f6f4f1;
+        }
         """)
 
         # ============ Weekly Page ================
