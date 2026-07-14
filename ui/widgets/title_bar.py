@@ -5,7 +5,8 @@ from ui.theme import ADD_BTN_STYLE
 
 class TitleBar(QFrame):
     """Title bar widget with optional add task button."""
-    def __init__(self, parent, h1: str, btn: bool= False):
+    
+    def __init__(self, parent, h1: str, btn: str | None):
         """Initialize title bar with title and optional button."""
         super().__init__(parent)
         self.parent = parent
@@ -16,7 +17,7 @@ class TitleBar(QFrame):
         layout.addStretch(1)
 
         if btn:
-            self.add_btn = PrimaryPushButton(FI.ADD,"   New Task")
+            self.add_btn = PrimaryPushButton(FI.ADD,"    " + btn)
             self.add_btn.setStyleSheet(ADD_BTN_STYLE)
-            self.add_btn.clicked.connect(self.parent.show_add_task_dialog)
+            self.add_btn.clicked.connect(self.parent.show_input_dialog)
             layout.addWidget(self.add_btn)
