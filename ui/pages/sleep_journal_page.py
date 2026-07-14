@@ -27,7 +27,7 @@ class SleepJournal(QWidget):
         
     def _build_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 24, 24, 24)
+        layout.setContentsMargins(24, 0, 24, 24)
         layout.setSpacing(16)
 
         title = TitleBar(self,"Sleep Tacking", btn= "Add Log")

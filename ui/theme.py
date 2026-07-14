@@ -2,6 +2,32 @@
 This File contains stylesheet themes for the Application
 """
 
+TITLE_STYLE = """
+    color: #000111;
+    font-size: 30px;
+    font-weight: semibold;
+
+"""
+BODY_STYLE = """
+    color: #111111;
+    font-size: 16px;
+"""
+
+ADD_BTN_STYLE = """
+QPushButton {
+    background    : #2383E2;
+    color         : #FFF;
+    border        : none;
+    border-radius : 6px;
+    font-size     : 16px;
+    font-weight   : semibold;
+    font-family   : 'Segoe UI', sans-serif;
+    padding       : 7px 20px;
+}
+QPushButton:hover   { background: #1A73CE; }
+QPushButton:pressed { background: #1260B5; }
+"""
+
 TAB_WIDG_STYLE = """            
 
 QTabBar {
@@ -32,19 +58,4 @@ QTabBar::tab:selected {
     border          : 1px solid #B4D1F8;
     font-weight     : 600;
 }
-"""
-
-ADD_BTN_STYLE = """
-QPushButton {
-    background    : #2383E2;
-    color         : #FFF;
-    border        : none;
-    border-radius : 6px;
-    font-size     : 14px;
-    font-weight   : 600;
-    font-family   : 'Segoe UI', sans-serif;
-    padding       : 7px 20px;
-}
-QPushButton:hover   { background: #1A73CE; }
-QPushButton:pressed { background: #1260B5; }
 """

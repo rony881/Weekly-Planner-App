@@ -1,32 +1,32 @@
 [
     {
-        "time": "09:00 AM",
-        "task": "Sprint Planning",
-        "priority": "Critical",
-        "done": false
-    },
-    {
-        "time": "11:00 AM",
-        "task": "Backend Development",
+        "time": "09:30 AM",
+        "task": "Project Planning",
         "priority": "High",
         "done": false
     },
     {
-        "time": "01:30 PM",
-        "task": "Break",
+        "time": "11:00 AM",
+        "task": "Client Call",
+        "priority": "Critical",
+        "done": false
+    },
+    {
+        "time": "01:00 PM",
+        "task": "Lunch",
         "priority": "Low",
         "done": false
     },
     {
         "time": "03:00 PM",
-        "task": "Testing & QA",
-        "priority": "High",
+        "task": "UI Design Review",
+        "priority": "Medium",
         "done": false
     },
     {
-        "time": "04:30 PM",
-        "task": "Team Sync",
-        "priority": "Medium",
+        "time": "05:00 PM",
+        "task": "Documentation",
+        "priority": "Low",
         "done": false
     }
 ]
