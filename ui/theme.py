@@ -38,15 +38,11 @@ BODY_STYLE = f"""
 TABLE_STYLE = """
 TableWidget {
     background-color: transparent;
+    font-size: 16px;
+    color: #222222;
     border: 1px solid #cdcdcd;
 }
-QHeaderView::section {
-    background: #fff;
-    color: #6B6B69;
-    font-weight: bold;
-    border: none;
-    padding: 8px;
-}
+
 """
 
 ADD_BTN_STYLE = """
@@ -76,8 +72,8 @@ QTabBar::tab {
     color           : #6B6B69;
     border          : 1px solid transparent;
     border-radius   : 6px;
-    font-size       : 12 px;
-    font-family     : 'Segoe UI', sans-serif;
+    font-size       : 19 px;
+    font-family     : sans-serif;
     padding         : 4px 14px;
     margin          : 8px 2px;
     min-height      : 30px;

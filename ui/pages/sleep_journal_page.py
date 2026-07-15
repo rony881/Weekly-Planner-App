@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QGridLayout, QVBoxLayout, QWidget,QHBoxLayout,QTableWidgetItem
+from PyQt6.QtWidgets import QAbstractItemView, QGridLayout, QVBoxLayout, QWidget,QHBoxLayout,QTableWidgetItem
 from qfluentwidgets import CaptionLabel, CardWidget, FluentIcon, PrimaryPushButton, TableWidget, TitleLabel
 from core.data_loader import load_sleep_logs
 from core.utils.logger import logger
@@ -90,18 +90,18 @@ class SleepHistory(TableWidget):
         ])
         self.setStyleSheet(TABLE_STYLE)
         self.verticalHeader().hide()
-
+        self.setBorderRadius(6)
+        self.setBorderVisible(True)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setAlternatingRowColors(False)
+        self.setShowGrid(False)
+        self.setMouseTracking(False)
+        
         header = self.horizontalHeader()
         header.setStretchLastSection(True)
         header.setSectionResizeMode(header.ResizeMode.Stretch)
-        header.setDefaultAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.setAlternatingRowColors(True)
-        self.setBorderVisible(False)
-        self.setShowGrid(False)
-        self.setMouseTracking(False)
-        self.setWordWrap(False)
-        self.setBorderVisible(True)
 
         # Adds all existing logs
         for log in sleep_logs:
