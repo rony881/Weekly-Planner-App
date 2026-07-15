@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QAbstractItemView, QGridLayout, QVBoxLayout, QWidget,QHBoxLayout,QTableWidgetItem
-from qfluentwidgets import CaptionLabel, CardWidget, FluentIcon, PrimaryPushButton, TableWidget, TitleLabel
+from qfluentwidgets import CaptionLabel, CardWidget, FluentIcon, TableWidget
 from core.data_loader import load_sleep_logs
 from core.utils.logger import logger
 from ui.theme import TABLE_STYLE
@@ -79,14 +79,15 @@ class SleepHistory(TableWidget):
     def __init__(self, parent, sleep_logs):
         super().__init__(parent)
 
-        self.setColumnCount(6)
+        self.setColumnCount(7)
         self.setHorizontalHeaderLabels([
             "Date",
             "Bedtime",
-            "Wake Up",
+            "Wake",
             "Duration",
-            "Score",
-            "Quality"
+            "Quality",
+            "Awakenings",
+            "Mood"
         ])
         self.setStyleSheet(TABLE_STYLE)
         self.verticalHeader().hide()
@@ -118,8 +119,9 @@ class SleepHistory(TableWidget):
             log["bedtime"],
             log["wakeup"],
             log["duration"],
-            log["score"],
-            log["quality"]
+            log["quality"],
+            log["awakenings"],
+            log["mood"]
         ]
 
         for column, value in enumerate(values):
