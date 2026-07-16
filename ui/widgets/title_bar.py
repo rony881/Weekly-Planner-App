@@ -6,7 +6,7 @@ from ui.theme import ADD_BTN_STYLE, TITLE_STYLE
 class TitleBar(QFrame):
     """Title bar widget with optional add task button."""
     
-    def __init__(self, parent, h1: str, btn: str | None):
+    def __init__(self, parent, h1: str, btn: str | None = None):
         """Initialize title bar with title and optional button."""
         super().__init__(parent)
         self.parent = parent
