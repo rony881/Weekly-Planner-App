@@ -8,17 +8,17 @@ class PageBaseWidget(QWidget):
 
     def __init__(self,parent):
         super().__init__(parent)
-        self.page_layout = QVBoxLayout(self)
-        self.page_layout.setContentsMargins(24, 1, 24, 24)
+        self.main_layout = QVBoxLayout(self)
+        self.main_layout.setContentsMargins(24, 1, 24, 24)
 
     def setPageType(self,type):
         self.page_type = type
         
     def setPageHeader(self,header: str, button: str | None = None): 
-        self.page_layout.addLayout(self.headerFrame(header, button))
+        self.main_layout.addLayout(self.headerFrame(header, button))
 
     def headerFrame(self,header: str, button: str | None = None):
-        header_lout = QHBoxLayout(self)
+        header_lout = QHBoxLayout()
         
         hdr = TitleLabel(header)
         hdr.setStyleSheet(TITLE_STYLE)
@@ -34,10 +34,13 @@ class PageBaseWidget(QWidget):
         return header_lout
         
     def addWidget(self,widget: QWidget):
-        self.page_layout.addWidget(widget)
+        self.main_layout.addWidget(widget)
         
     def addLayout(self,layout):
-        self.page_layout.addLayout(layout)
+        self.main_layout.addLayout(layout)
+
+    def addStretch(self):
+        self.main_layout.addStretch()
 
     def onAddButtonClicked(self):
         """
