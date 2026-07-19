@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QFrame, QHBoxLayout, QScrollArea, QVBoxLayout, QWidget
-from qfluentwidgets import FluentIcon, PrimaryPushButton, StrongBodyLabel, TitleLabel
+from qfluentwidgets import FluentIcon, PrimaryPushButton, StrongBodyLabel, TableWidget, TitleLabel
 from ui.theme import ADD_BTN_STYLE, TITLE_STYLE
 
 
@@ -43,6 +43,13 @@ class PageBaseWidget(QWidget):
     def addStretch(self):
         self.main_layout.addStretch()
 
+    def onAddButtonClicked(self) -> None:
+        """
+        Override this method to decide what happen 
+        if add button is clicked
+        """
+        ...
+        
     def addTitle(self, title: str, *buttons):
         title_layout = QHBoxLayout()
         title_layout.addWidget(self.buildTitle(title))
@@ -82,9 +89,11 @@ class PageBaseWidget(QWidget):
 
         return scroll_area
 
-    def onAddButtonClicked(self) -> None:
-        """
-        Override this method to decide what happen 
-        if add button is clicked
-        """
-        ...
+    def buildTableWidget(self, hdr_lbls: list[str]) -> TableWidget:
+        table = TableWidget()
+        table.setColumnCount(len(hdr_lbls))
+        table.setHorizontalHeaderLabels(hdr_lbls)
+        table.setMouseTracking(False)
+        table.setShowGrid(False)
+
+        return table
