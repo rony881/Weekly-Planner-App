@@ -3,7 +3,7 @@ from qfluentwidgets import (InfoBar,
     ProgressRing, 
 )
 from config import INFO_BAR_DURATION_SHORT, current_day
-from core.data_loader import load_todays_tasks, save_todays_tasks
+from core.services.task_service import load_todays_tasks, save_todays_tasks
 from core.models.task import Task
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.edit_task_dialog import EditTaskDialog

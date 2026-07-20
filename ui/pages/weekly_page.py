@@ -2,10 +2,9 @@ from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 from qfluentwidgets import InfoBar, InfoBarPosition
 
-from config import DAYS, INFO_BAR_DURATION_SHORT, TABLE_ROW_HEIGHT, TIME_COL, TASK_COL, PRIORITY_COL
-from core.data_loader import load_schedule, save_schedule
+from config import INFO_BAR_DURATION_SHORT, TABLE_ROW_HEIGHT, TIME_COL, TASK_COL, PRIORITY_COL
+from core.services.schedule_service import load_schedule, save_schedule
 from core.models.task import Task
-from ui.theme import TAB_WIDG_STYLE
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.page_base_widget import PageBaseWidget
 from core.utils.logger import logger

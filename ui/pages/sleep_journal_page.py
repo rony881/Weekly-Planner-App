@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QAbstractItemView, QGridLayout,QTableWidgetItem
 from qfluentwidgets import FluentIcon as FI, TableWidget
-from core.data_loader import load_sleep_logs
+from core.services.sleep_services import load_sleep_logs
 from core.utils.logger import logger
 from ui.widgets.page_base_widget import PageBaseWidget
 from ui.widgets.stats_card import StatsCard

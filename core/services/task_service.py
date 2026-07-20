@@ -1,14 +1,13 @@
-# core/services/task_service.py
 import json
 from config import LAST_LOADED_DAY_FILE, TODAYS_TASKS_FILE
 from core.utils.logger import logger
 from core.models.task import Task
+from core.services.schedule_service import load_schedule 
 
 
 def load_todays_tasks(day: str) -> list[Task]:
     """Load today's tasks for the specified day."""
     try:
-        from core.data_loader import load_schedule
         
         schedule = load_schedule()
         if day not in schedule:
