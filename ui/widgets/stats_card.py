@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
-from qfluentwidgets import CaptionLabel, CardWidget, IconWidget,StrongBodyLabel,SubtitleLabel
+from qfluentwidgets import CaptionLabel, CardWidget, IconWidget,StrongBodyLabel
 from core.utils.logger import logger
 
 
@@ -39,7 +39,6 @@ class StatsCard(CardWidget):
         layout.addWidget(self.valueLabel)
         
         self.subLabel = CaptionLabel("", self)
-        self.subLabel.setTextColor("#606060", "#c0c0c0")
         layout.addWidget(self.subLabel)
         layout.addStretch(1)
 
