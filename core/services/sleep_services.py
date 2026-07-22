@@ -4,18 +4,18 @@ from core.utils.logger import logger
 
 
 def load_sleep_logs() -> list[dict]:
-    """Loads Sleep Logs History From JSON File """
+    """Loads Sleep Logs History From JSON File."""
 
     if not SLEEP_LOGS_FILE.exists():
-        logger.error(f"File not found: {SLEEP_LOGS_FILE}")
+        logger.warning(f"No sleep logs file found, starting empty: {SLEEP_LOGS_FILE}")
         return []
+
     try:
         with open(SLEEP_LOGS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
             logger.info(f"Successfully Loaded {SLEEP_LOGS_FILE}")
-
             return data
-            
+
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON in Logs file: {e}")
         raise

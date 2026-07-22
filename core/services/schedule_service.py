@@ -7,7 +7,7 @@ def load_schedule() -> dict[str, list[list]]:
     """Load weekly schedule from JSON file."""
     
     if not WEEKLY_SCHEDULE_FILE.exists():
-        logger.error(f"Schedule file not found: {WEEKLY_SCHEDULE_FILE}")
+        logger.warning(f"Schedule file not found: {WEEKLY_SCHEDULE_FILE}")
         return {}
         
     try:
