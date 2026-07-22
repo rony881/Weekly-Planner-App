@@ -8,8 +8,7 @@ def load_sleep_logs() -> list[dict]:
 
     if not SLEEP_LOGS_FILE.exists():
         logger.error(f"File not found: {SLEEP_LOGS_FILE}")
-        raise FileNotFoundError(f"File not found: {SLEEP_LOGS_FILE}")
-
+        return []
     try:
         with open(SLEEP_LOGS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)

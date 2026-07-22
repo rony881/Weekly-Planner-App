@@ -7,7 +7,7 @@ from core.services.task_service import load_todays_tasks, save_todays_tasks
 from core.models.task import Task
 from ui.widgets.add_task_dialog import AddTaskDialog
 from ui.widgets.edit_task_dialog import EditTaskDialog
-from ui.widgets.card import SimpleCard, TaskCard
+from ui.widgets.task_card import SimpleCard, TaskCard
 from ui.widgets.page_base_widget import PageBaseWidget
 from core.utils.logger import logger
 

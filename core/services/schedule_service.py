@@ -8,7 +8,7 @@ def load_schedule() -> dict[str, list[list]]:
     
     if not WEEKLY_SCHEDULE_FILE.exists():
         logger.error(f"Schedule file not found: {WEEKLY_SCHEDULE_FILE}")
-        raise FileNotFoundError(f"Schedule file not found: {WEEKLY_SCHEDULE_FILE}")
+        return {}
         
     try:
         with open(WEEKLY_SCHEDULE_FILE, "r", encoding="utf-8") as f:
