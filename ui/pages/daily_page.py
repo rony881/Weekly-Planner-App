@@ -52,7 +52,7 @@ class DailyPage(PageBaseWidget):
         for task in self.tasks:
             card = TaskCard(task)
             card.checkbox_changed.connect(self.update_stats)
-            card.edit_clicked.connect(self._on_edit_task)
+            card.edit_clicked.connect(self.onUpdateButtonClicked)
             card.delete_clicked.connect(self._on_delete_task)
             self.list_layout.addWidget(card)
 
@@ -89,29 +89,18 @@ class DailyPage(PageBaseWidget):
             data = dialog.get_data()
             self._add_task(data)
 
-    def _on_delete_task(self, task: Task):
-        """Remove a task from the list and persist the change."""
-        if task in self.tasks:
-            self.tasks.remove(task)
-            save_todays_tasks(self.tasks)
-            self._refresh_task_list()
-
-            InfoBar.success(
-                title="Task deleted",
-                content=task.task,
-                duration=INFO_BAR_DURATION_SHORT,
-                position=InfoBarPosition.TOP,
-                parent=self,
-            )
-            
-    def _on_edit_task(self, task: Task):
+    def onUpdateButtonClicked(self, task: Task):
         """Open the edit dialog for an existing task."""
         logger.info(f"Edit task button requested: {task.task}")
         dialog = EditTaskDialog(task, parent=self)
-        dialog.task_updated.connect(self._on_task_updated)
-        dialog.exec()
-
-    def _on_task_updated(self, task: Task, time, task_text, priority):
+        if dialog.exec():
+            data = dialog.get_data()
+            print(data)
+            print(type(data))
+            print(len(data))
+            self._update_task(*data)
+            
+    def _update_task(self, task: Task, time, task_text, priority):
         """Handle task_updated signal from EditTaskDialog."""
         task.time = time
         task.task = task_text
@@ -127,6 +116,21 @@ class DailyPage(PageBaseWidget):
             parent=self,
         )
         
+    def _on_delete_task(self, task: Task):
+        """Remove a task from the list and persist the change."""
+        if task in self.tasks:
+            self.tasks.remove(task)
+            save_todays_tasks(self.tasks)
+            self._refresh_task_list()
+
+            InfoBar.success(
+                title="Task deleted",
+                content=task.task,
+                duration=INFO_BAR_DURATION_SHORT,
+                position=InfoBarPosition.TOP,
+                parent=self,
+            )
+            
     def _on_clear_completed(self):
         """Remove all completed tasks from the list."""
         remaining = [t for t in self.tasks if not t.done]
