@@ -101,6 +101,15 @@ class EditTaskDialog(QDialog):
 
         outer.addWidget(self.card)
 
+    def _add_shadow(self):
+        """Add drop shadow effect to the dialog card."""
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(48)
+        shadow.setXOffset(0)
+        shadow.setYOffset(10)
+        shadow.setColor(QColor(0, 0, 0, 45))
+        self.card.setGraphicsEffect(shadow)
+        
     def _populate_fields(self):
         """Pre-fill the dialog fields with the task's existing data."""
         self.task_input.setPlainText(self.task.task)
@@ -125,12 +134,12 @@ class EditTaskDialog(QDialog):
         logger.info(f"Saving edits for task: {self.task.task} -> {task_text}")
         self.task_updated.emit(self.task, time, task_text, prio)
         self.accept()
+        
+    def get_data(self):
+        
+        """Returns updated task data."""
+        task = self.task_input.toPlainText().strip()
+        time = self.time.getTime().toString("hh:mm AP")
+        prio = self.priority.currentText()
 
-    def _add_shadow(self):
-        """Add drop shadow effect to the dialog card."""
-        shadow = QGraphicsDropShadowEffect(self)
-        shadow.setBlurRadius(48)
-        shadow.setXOffset(0)
-        shadow.setYOffset(10)
-        shadow.setColor(QColor(0, 0, 0, 45))
-        self.card.setGraphicsEffect(shadow)
+        return self.task, time, task, prio
