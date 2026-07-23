@@ -14,6 +14,7 @@ from qfluentwidgets import AMTimePicker
 from config import PRIORITIES, UI_CONFIG
 from core.models.task import Task
 from core.utils.logger import logger
+from ui.theme import CLOSE_BTN_STYLE, CREATE_TASK_BTN_STYLE, DIALOG_CARD_STYLE, PRIORITY_STYLE, TASK_INPUT_STYLE
 
 DIALOG_WIDTH = UI_CONFIG["dialog_width"]
 DIALOG_HEIGHT = UI_CONFIG["dialog_height"]
@@ -48,13 +49,7 @@ class EditTaskDialog(QDialog):
 
         self.card = QWidget()
         self.card.setObjectName("card")
-        self.card.setStyleSheet("""
-            QWidget#card {
-                background: #FFFFFF;
-                border-radius: 16px;
-                border: 1px solid #e8e8e8;
-            }
-            """)
+        self.card.setStyleSheet(DIALOG_CARD_STYLE)
         card_layout = QVBoxLayout(self.card)
         card_layout.setContentsMargins(24, 5, 24, 18)
         card_layout.setSpacing(0)
@@ -70,13 +65,7 @@ class EditTaskDialog(QDialog):
         close_btn.setFixedSize(28, 28)
         close_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         close_btn.clicked.connect(self.reject)
-        close_btn.setStyleSheet("""
-            QPushButton {
-                border: none; border-radius: 14px;
-                color: #888; font-size: 14px; background: transparent;
-            }
-            QPushButton:hover { background: #F0F0F0; color: #111111; }
-        """)
+        close_btn.setStyleSheet(CLOSE_BTN_STYLE)
 
         header.addStretch()
         header.addWidget(close_btn)
@@ -84,15 +73,7 @@ class EditTaskDialog(QDialog):
         self.task_input = QTextEdit()
         self.task_input.setPlaceholderText("Write here...")
         self.task_input.setFixedHeight(110)
-        self.task_input.setStyleSheet("""
-            QTextEdit {
-                border: none;
-                border-radius: 6px;
-                font-size: 17px;
-                color: #444444;
-                background: transparent;
-            }
-        """)
+        self.task_input.setStyleSheet(TASK_INPUT_STYLE)
         footer = QHBoxLayout()
         footer.setSpacing(8)
         footer.setContentsMargins(0, 12, 0, 0)
@@ -103,60 +84,14 @@ class EditTaskDialog(QDialog):
         self.priority = QComboBox(self)
         self.priority.addItems(PRIORITIES)
         self.priority.setObjectName("priority")
-        self.priority.setStyleSheet("""
-        QComboBox#priority {
-            color: #6B6B69;
-            background: transparent;
-            border: 1px solid #cccccc;
-            border-bottom: 1px solid #cdcdcd;
-            border-top: 1px solid #cccccc;
-            border-radius: 6px;
-            padding: 4px 10px;
-            min-width: 100px;
-        }
-
-        QComboBox#priority QAbstractItemView {
-            background: white;
-            border: 1px solid #777777;
-            border-radius: 6px;
-            outline: none;
-        }
-
-        QComboBox#priority QAbstractItemView::item {
-            color: #6B6B69;
-            padding: 6px 10px;
-            min-height: 24px;
-        }
-
-        QComboBox#priority QAbstractItemView::item:selected {
-            background: #2383E2;
-            color: white;
-        }
-
-        QComboBox#priority QAbstractItemView::item:hover {
-            background: #1A73CE;
-            color: #ffffff;
-        }
-        """)
+        self.priority.setStyleSheet(PRIORITY_STYLE)
         footer.addWidget(self.priority)
 
         save_btn = QPushButton("Save Changes")
         save_btn.setFixedHeight(40)
         save_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         save_btn.clicked.connect(self._on_save)
-        save_btn.setStyleSheet("""
-            QPushButton {
-                background: #1A73CE;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                padding: 0 24px;
-                font-size: 14px;
-                font-weight: 700;
-            }
-            QPushButton:hover   { background: #2383E2; }
-            QPushButton:pressed { background: #1260B5; }
-        """)
+        save_btn.setStyleSheet(CREATE_TASK_BTN_STYLE)
         footer.addStretch()
         footer.addWidget(save_btn)
 
