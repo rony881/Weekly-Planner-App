@@ -53,9 +53,9 @@ class AddTaskDialog(QDialog):
         header = QHBoxLayout()
         header.setContentsMargins(0,0,0,0)
 
-        title = QLabel("Create Task")
-        title.setStyleSheet("color:#666666;font-size:17px;")
-        header.addWidget(title)
+        self.title = QLabel("Create Task")
+        self.title.setStyleSheet("color:#666666;font-size:17px;")
+        header.addWidget(self.title)
 
         close_btn = QPushButton("✕")
         close_btn.setFixedSize(28, 28)
@@ -85,14 +85,14 @@ class AddTaskDialog(QDialog):
         self.priority.setPlaceholderText("Priority")
         footer.addWidget(self.priority)
         
-        create_btn = QPushButton("Create Task")
-        create_btn.setFixedHeight(40)
-        create_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.submit_btn = QPushButton("Create Task")
+        self.submit_btn.setFixedHeight(40)
+        self.submit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
 
-        create_btn.clicked.connect(self._accept)
-        create_btn.setStyleSheet(CREATE_TASK_BTN_STYLE)
+        self.submit_btn.clicked.connect(self._accept)
+        self.submit_btn.setStyleSheet(CREATE_TASK_BTN_STYLE)
         footer.addStretch()
-        footer.addWidget(create_btn)
+        footer.addWidget(self.submit_btn)
         
         card_layout.addLayout(header)
         card_layout.addWidget(self.task_input)
