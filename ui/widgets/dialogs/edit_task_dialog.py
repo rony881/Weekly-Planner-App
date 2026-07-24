@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QTime
 from core.models.task import Task
 from core.utils.logger import logger
-from ui.widgets.add_task_dialog import AddTaskDialog
+from ui.widgets.dialogs.add_task_dialog import AddTaskDialog
 
 
 class EditTaskDialog(AddTaskDialog):

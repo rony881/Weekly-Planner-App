@@ -1,4 +1,4 @@
-from ui.widgets.main_window import MainWindow
+from ui.main_window import MainWindow
 from PyQt6.QtWidgets import QApplication
 import sys
 from core.utils.logger import logger
